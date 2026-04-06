@@ -1,7 +1,14 @@
+"use client";
+
 import cloudbase from "@cloudbase/js-sdk";
 
-const app = cloudbase.init({
-  env: "tnt-dzyanvssa",
-});
+let db: any = null;
 
-export const db = app.database();
+if (typeof window !== "undefined") {
+  const app = cloudbase.init({
+    env: "tnt-dzyanvssa",
+  });
+  db = app.database();
+}
+
+export { db };
