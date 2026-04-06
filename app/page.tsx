@@ -50,7 +50,7 @@ const initialAccounts: Account[] = [
 ];
 
 const initialTexts = {
-  pageHeader: "厦门华侨大学陈广玮给妈妈的资金安全提醒平台",
+  pageHeader: "厦门华侨大学陈广玮给妈妈的发财平台",
   siteTitle: "家人防骗提醒",
   siteNotice:
     "请勿向陌生平台转账。所有金额和账户状态都可能被后台随意改动，本页仅用于帮助家人识别高风险充值提现套路。",
