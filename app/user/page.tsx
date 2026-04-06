@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { db } from "@/lib/cloudbase";
+import { getDb } from "@/lib/cloudbase";
 import { useRouter } from "next/navigation";
 
 type UserDoc = {
@@ -46,6 +46,12 @@ export default function UserPage() {
   const [showRechargeImage, setShowRechargeImage] = useState(false);
 
   const loadUserAndData = async () => {
+    const db = await getDb();
+    if (!db) {
+      setMessage("数据库初始化失败");
+      return;
+    }
+
     const raw = typeof window !== "undefined" ? localStorage.getItem("demo_user") : null;
     if (!raw) {
       router.push("/login");
@@ -89,7 +95,8 @@ export default function UserPage() {
   };
 
   const submitRecharge = async () => {
-    if (!currentUser) return;
+    const db = await getDb();
+    if (!db || !currentUser) return;
     const money = Number(amount);
     if (!money || money <= 0) {
       setMessage("请输入有效金额");
@@ -112,7 +119,8 @@ export default function UserPage() {
   };
 
   const submitWithdraw = async () => {
-    if (!currentUser) return;
+    const db = await getDb();
+    if (!db || !currentUser) return;
     const money = Number(amount);
     if (!money || money <= 0) {
       setMessage("请输入有效金额");
@@ -146,7 +154,8 @@ export default function UserPage() {
   };
 
   const buyProduct = async (product: ProductDoc) => {
-    if (!currentUser) return;
+    const db = await getDb();
+    if (!db || !currentUser) return;
     if (currentUser.balance < product.price) {
       setMessage("余额不足");
       return;
@@ -172,7 +181,8 @@ export default function UserPage() {
   };
 
   const submitSellRequest = async (item: InventoryDoc) => {
-    if (!currentUser) return;
+    const db = await getDb();
+    if (!db || !currentUser) return;
 
     await db.collection("inventory").doc(item._id).update({
       status: "sell_pending",

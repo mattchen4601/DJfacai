@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { db } from "@/lib/cloudbase";
+import { getDb } from "@/lib/cloudbase";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
@@ -18,6 +18,12 @@ export default function LoginPage() {
     }
 
     try {
+      const db = await getDb();
+      if (!db) {
+        setMsg("数据库初始化失败");
+        return;
+      }
+
       const res = await db
         .collection("users")
         .where({

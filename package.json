@@ -1,5 +1,5 @@
 {
-  "name": "cloudbase-safe-sync-demo",
+  "name": "cloudbase-safe-sync-demo-v2",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,7 +13,9 @@
     "react-dom": "^19.0.0",
     "tailwindcss": "^4.1.12",
     "@tailwindcss/postcss": "^4.1.12",
-    "@cloudbase/js-sdk": "^2.14.0"
+    "@cloudbase/js-sdk": "^2.14.0",
+    "jsonwebtoken": "^9.0.2",
+    "@cloudbase/signature-nodejs": "^1.0.0"
   },
   "devDependencies": {
     "typescript": "^5.9.2",

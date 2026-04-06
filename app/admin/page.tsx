@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { db } from "@/lib/cloudbase";
+import { getDb } from "@/lib/cloudbase";
 import { useRouter } from "next/navigation";
 import { toDateText } from "@/lib/utils";
 
@@ -48,6 +48,12 @@ export default function AdminPage() {
   };
 
   const loadAll = async () => {
+    const db = await getDb();
+    if (!db) {
+      setMsg("数据库初始化失败");
+      return;
+    }
+
     await ensureAdmin();
     const userRes = await db.collection("users").get();
     setUsers(userRes.data as UserDoc[]);
@@ -64,12 +70,18 @@ export default function AdminPage() {
   }, []);
 
   const updateUserField = async (id: string, patch: Partial<UserDoc>) => {
+    const db = await getDb();
+    if (!db) return;
+
     await db.collection("users").doc(id).update(patch);
     setMsg("已更新账户");
     await loadAll();
   };
 
   const approveRequest = async (item: RequestDoc) => {
+    const db = await getDb();
+    if (!db) return;
+
     await db.collection("requests").doc(item._id).update({
       status: "approved",
     });
@@ -106,6 +118,9 @@ export default function AdminPage() {
   };
 
   const rejectRequest = async (item: RequestDoc) => {
+    const db = await getDb();
+    if (!db) return;
+
     await db.collection("requests").doc(item._id).update({
       status: "rejected",
     });

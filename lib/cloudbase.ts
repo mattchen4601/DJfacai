@@ -1,14 +1,20 @@
 "use client";
 
-import cloudbase from "@cloudbase/js-sdk";
+let cachedDb: any = null;
 
-let db: any = null;
+export async function getDb() {
+  if (cachedDb) return cachedDb;
 
-if (typeof window !== "undefined") {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const cloudbase = (await import("@cloudbase/js-sdk")).default;
+
   const app = cloudbase.init({
     env: "tnt-dzyanvssa",
   });
-  db = app.database();
-}
 
-export { db };
+  cachedDb = app.database();
+  return cachedDb;
+}
